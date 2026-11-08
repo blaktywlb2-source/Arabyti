@@ -25,9 +25,28 @@ header{background:#111;border-bottom:1px solid #292929;position:sticky;top:0;z-i
 .logo-name{font-size:25px;font-weight:900;color:var(--light)}
 .logo-sub{font-size:9px;color:#aaa;letter-spacing:2px}
 
-.links{display:flex;gap:22px;color:#ccc;font-size:13px;align-items:center}
-.links a{white-space:nowrap}
-.links a:hover{color:var(--gold)}
+/* التبويبات بشكل واضح وقابل للضغط */
+.links{display:flex;gap:9px;color:#ccc;font-size:13px;align-items:center}
+.links a{
+ white-space:nowrap;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ padding:10px 13px;
+ border:1px solid #514126;
+ border-radius:9px;
+ background:#211d16;
+ color:#f2d28b;
+ font-weight:800;
+ transition:.2s;
+}
+.links a:hover{
+ background:linear-gradient(135deg,#f2d28b,#bd8832);
+ color:#17120a;
+ border-color:#f2d28b;
+ transform:translateY(-2px);
+}
+.links a:active{transform:scale(.96)}
 .nav-actions{display:flex;gap:8px;align-items:center}
 .btn{border:0;border-radius:10px;padding:11px 17px;font-weight:800}
 .gold{background:linear-gradient(135deg,#f2d28b,#bd8832);color:#17120a}
@@ -81,14 +100,14 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 .form button{width:100%}
 .form-note{color:#999;font-size:12px;text-align:center;line-height:1.8}
 .google{background:#fff;color:#222}
-.notice{padding:11px;border-radius:9px;background:#282319;color:#f1d28b;font-size:12px;line-height:1.8;display:none}
+.notice{padding:11px;border-radius:9px;background:#282319;color:#f1d28b;font-size:12px;line-height:1.9;display:none;white-space:pre-wrap;overflow-wrap:anywhere}
 .notice.show{display:block}
 .account{font-size:12px;color:var(--gold);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 @media(max-width:850px){
  .nav{flex-wrap:wrap;padding:10px 0;gap:10px}
- .links{display:flex;order:3;width:100%;justify-content:space-between;gap:8px;border-top:1px solid #292929;padding-top:10px}
- .links a{font-size:12px}
+ .links{display:flex;order:3;width:100%;justify-content:space-between;gap:6px;border-top:1px solid #292929;padding-top:10px}
+ .links a{font-size:12px;padding:9px 10px;flex:1}
  .cars{grid-template-columns:repeat(2,1fr)}
  .search{grid-template-columns:1fr 1fr}
 }
@@ -103,8 +122,8 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
  .nav-actions{gap:5px;margin-right:auto}
  .nav-actions .btn{padding:8px 10px;font-size:11px}
  .nav-actions .account{display:none}
- .links{display:flex!important;order:3;width:100%;justify-content:space-between;gap:3px;padding:10px 0 3px}
- .links a{font-size:11px;white-space:nowrap}
+ .links{display:flex!important;order:3;width:100%;justify-content:space-between;gap:4px;padding:10px 0 3px}
+ .links a{font-size:10px;white-space:nowrap;padding:8px 4px;flex:1}
  .cars{grid-template-columns:1fr}
  .categories{grid-template-columns:repeat(2,1fr)}
  .search{grid-template-columns:1fr}
@@ -252,7 +271,6 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 </div>
 </footer>
 
-<!-- نافذة تسجيل الدخول بقوقل فقط -->
 <div class="modal" id="authModal">
 <div class="modal-box">
 <div class="modal-head">
@@ -269,7 +287,6 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 </div>
 </div>
 
-<!-- نافذة إضافة سيارة -->
 <div class="modal" id="carModal">
 <div class="modal-box">
 <div class="modal-head">
@@ -339,7 +356,7 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 <textarea class="field" id="carDescription" rows="3" placeholder="اكتب تفاصيل إضافية"></textarea>
 </label>
 
-<button class="btn gold" id="publishBtn">نشر الإعلان</button>
+<button class="btn gold" id="publishBtn" type="submit">نشر الإعلان</button>
 <p class="form-note">لن يتم رفع صور في هذه المرحلة. الإعلان سيُحفظ في قاعدة بيانات عربيتي.</p>
 
 </form>
@@ -383,9 +400,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
- prompt: "select_account"
-});
+googleProvider.setCustomParameters({prompt:"select_account"});
 
 const $ = id => document.getElementById(id);
 
@@ -431,10 +446,25 @@ function friendlyError(error){
   "auth/popup-blocked":"المتصفح منع نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة وحاول مرة أخرى.",
   "auth/cancelled-popup-request":"تم إلغاء طلب تسجيل الدخول السابق.",
   "auth/account-exists-with-different-credential":"هذا الحساب مرتبط بطريقة دخول أخرى.",
-  "permission-denied":"ليس لديك صلاحية لتنفيذ العملية. راجع قواعد Firestore."
+  "permission-denied":"رفضت Firestore العملية بسبب الصلاحيات.",
+  "unavailable":"خدمة Firebase غير متاحة حالياً. تحقق من اتصال الإنترنت.",
+  "failed-precondition":"هناك شرط غير مستوفى في إعدادات قاعدة البيانات أو الفهرس."
  };
 
- return errors[code]||error.message||"حدث خطأ. حاول مرة أخرى.";
+ return errors[code]||error.message||"حدث خطأ غير معروف.";
+}
+
+function showDetailedError(error){
+ const code=error.code||"غير معروف";
+ const message=error.message||"لا توجد تفاصيل إضافية";
+
+ console.error("ARABYTI ERROR:",error);
+ console.error("ERROR CODE:",code);
+ console.error("ERROR MESSAGE:",message);
+
+ return friendlyError(error)+
+  "\n\nرمز الخطأ: "+code+
+  "\nالتفاصيل: "+message;
 }
 
 $("googleBtn").onclick=async()=>{
@@ -456,7 +486,7 @@ $("googleBtn").onclick=async()=>{
   closeModal("authModal");
 
  }catch(error){
-  notice("authNotice",friendlyError(error));
+  notice("authNotice",showDetailedError(error));
  }finally{
   button.disabled=false;
   button.textContent="G　المتابعة باستخدام Google";
@@ -497,7 +527,7 @@ $("logoutBtn").onclick=async()=>{
  try{
   await signOut(auth);
  }catch(error){
-  alert(friendlyError(error));
+  alert(showDetailedError(error));
  }
 };
 
@@ -602,9 +632,13 @@ onSnapshot(carsQuery,snapshot=>{
  applyFilters();
 
 },error=>{
- console.error("Firestore read error:",error);
+ console.error("FIRESTORE READ ERROR:",error);
  $("carList").innerHTML="";
- notice("carNotice","تعذر تحميل الإعلانات. تأكد من قواعد Firestore.");
+ $("empty").style.display="block";
+ $("empty").textContent=
+  "تعذر تحميل الإعلانات. رمز الخطأ: "+
+  (error.code||"غير معروف")+
+  " — "+(error.message||"");
 });
 
 function currencyFor(country){
@@ -653,12 +687,17 @@ $("carForm").addEventListener("submit",async e=>{
 
  e.preventDefault();
 
- const isGoogleAccount=currentUser?.providerData?.some(
+ if(!currentUser){
+  notice("carNotice","انتهت جلسة الدخول. سجّل الدخول مرة أخرى.");
+  return;
+ }
+
+ const isGoogleAccount=currentUser.providerData.some(
   provider=>provider.providerId==="google.com"
  );
 
- if(!currentUser||!isGoogleAccount||!currentUser.emailVerified){
-  notice("carNotice","يجب تسجيل الدخول بحساب Google أولاً.");
+ if(!isGoogleAccount||!currentUser.emailVerified){
+  notice("carNotice","يجب تسجيل الدخول بحساب Google موثق أولاً.");
   return;
  }
 
@@ -666,13 +705,31 @@ $("carForm").addEventListener("submit",async e=>{
 
  const button=$("publishBtn");
  button.disabled=true;
+ button.textContent="جارٍ نشر الإعلان...";
 
  try{
+
+  // تحديث جلسة المستخدم قبل محاولة الكتابة
+  await currentUser.getIdToken(true);
+
+  const tokenResult=await currentUser.getIdTokenResult();
+
+  // معلومات تشخيصية لا تتضمن رمز الدخول نفسه
+  const authCheck={
+   uid:currentUser.uid,
+   email:currentUser.email,
+   emailVerified:currentUser.emailVerified,
+   providerIds:currentUser.providerData.map(p=>p.providerId),
+   signInProvider:tokenResult.claims.firebase?.sign_in_provider,
+   tokenEmailVerified:tokenResult.claims.email_verified
+  };
+
+  console.log("ARABYTI AUTH CHECK:",authCheck);
 
   const country=$("carCountry").value;
   const phone=$("carPhone").value.trim();
 
-  await addDoc(collection(db,"cars"),{
+  const carData={
 
    brand:$("carBrand").value.trim(),
    model:$("carModel").value.trim(),
@@ -694,7 +751,19 @@ $("carForm").addEventListener("submit",async e=>{
    createdAt:serverTimestamp(),
    status:"active"
 
+  };
+
+  console.log("ARABYTI CAR DATA:",{
+   ...carData,
+   createdAt:"serverTimestamp"
   });
+
+  const documentRef=await addDoc(
+   collection(db,"cars"),
+   carData
+  );
+
+  console.log("ARABYTI PUBLISH SUCCESS:",documentRef.id);
 
   $("carForm").reset();
   closeModal("carModal");
@@ -703,10 +772,22 @@ $("carForm").addEventListener("submit",async e=>{
 
  }catch(error){
 
-  notice("carNotice",friendlyError(error));
+  console.error("ARABYTI PUBLISH FAILED:",error);
+
+  const code=error.code||"غير معروف";
+  const message=error.message||"لا توجد تفاصيل إضافية";
+
+  notice(
+   "carNotice",
+   friendlyError(error)+
+   "\n\nرمز الخطأ: "+code+
+   "\nالتفاصيل: "+message+
+   "\n\nافتح Console إذا احتجنا معلومات تشخيصية إضافية."
+  );
 
  }finally{
   button.disabled=false;
+  button.textContent="نشر الإعلان";
  }
 
 });
