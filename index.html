@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101010">
 <title>عربيتي | سوق السيارات</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+
 :root{--gold:#d8ad58;--light:#f2d28b;--bg:#101010;--panel:#1b1b1b;--muted:#999;--white:#fff}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Cairo,sans-serif;background:var(--bg);color:var(--white)}
@@ -14,6 +16,7 @@ button,input,select,textarea{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
 .container{width:min(1150px,92%);margin:auto}
+
 header{background:#111;border-bottom:1px solid #292929;position:sticky;top:0;z-index:20}
 .nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:15px}
 .logo{display:flex;align-items:center;gap:10px}
@@ -21,13 +24,16 @@ header{background:#111;border-bottom:1px solid #292929;position:sticky;top:0;z-i
 .logo-icon svg{width:38px}
 .logo-name{font-size:25px;font-weight:900;color:var(--light)}
 .logo-sub{font-size:9px;color:#aaa;letter-spacing:2px}
-.links{display:flex;gap:22px;color:#ccc;font-size:13px}
+
+.links{display:flex;gap:22px;color:#ccc;font-size:13px;align-items:center}
+.links a{white-space:nowrap}
 .links a:hover{color:var(--gold)}
 .nav-actions{display:flex;gap:8px;align-items:center}
 .btn{border:0;border-radius:10px;padding:11px 17px;font-weight:800}
 .gold{background:linear-gradient(135deg,#f2d28b,#bd8832);color:#17120a}
 .darkbtn{background:#262626;color:white;border:1px solid #444}
 .btn:disabled{opacity:.5;cursor:not-allowed}
+
 .hero{padding:65px 0 50px;background:radial-gradient(ellipse at 75% 20%,#61451e44,transparent 55%),linear-gradient(120deg,#171717,#101010)}
 .hero h1{font-size:clamp(36px,6vw,62px);line-height:1.4;margin:12px 0}
 .hero h1 span{color:var(--gold)}
@@ -39,6 +45,7 @@ header{background:#111;border-bottom:1px solid #292929;position:sticky;top:0;z-i
 .stats{display:flex;gap:35px;margin-top:30px;flex-wrap:wrap}
 .stats strong{display:block;color:var(--light);font-size:23px}
 .stats small{color:#999}
+
 section{padding:48px 0}
 .heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:23px}
 .heading h2{font-size:24px}
@@ -61,6 +68,7 @@ section{padding:48px 0}
 .cta p{color:#aaa;font-size:13px}
 footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 .footer-row{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+
 .modal{position:fixed;inset:0;background:#000c;z-index:50;display:none;align-items:center;justify-content:center;padding:15px}
 .modal.show{display:flex}
 .modal-box{width:min(440px,100%);background:#1b1b1b;border:1px solid #70552d;border-radius:17px;padding:23px;max-height:90vh;overflow:auto}
@@ -72,19 +80,47 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 .form .field{margin-top:5px}
 .form button{width:100%}
 .form-note{color:#999;font-size:12px;text-align:center;line-height:1.8}
-.form-note button{background:none;color:var(--gold);border:0;width:auto;padding:0}
 .google{background:#fff;color:#222}
 .notice{padding:11px;border-radius:9px;background:#282319;color:#f1d28b;font-size:12px;line-height:1.8;display:none}
 .notice.show{display:block}
 .account{font-size:12px;color:var(--gold);max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-@media(max-width:850px){.links{display:none}.cars{grid-template-columns:repeat(2,1fr)}.search{grid-template-columns:1fr 1fr}}
-@media(max-width:550px){.cars{grid-template-columns:1fr}.categories{grid-template-columns:repeat(2,1fr)}.search{grid-template-columns:1fr}.hero{padding:45px 0}.nav{min-height:68px}.logo-name{font-size:21px}.cta{align-items:flex-start;flex-direction:column}.nav-actions .darkbtn{display:none}}
+
+@media(max-width:850px){
+ .nav{flex-wrap:wrap;padding:10px 0;gap:10px}
+ .links{display:flex;order:3;width:100%;justify-content:space-between;gap:8px;border-top:1px solid #292929;padding-top:10px}
+ .links a{font-size:12px}
+ .cars{grid-template-columns:repeat(2,1fr)}
+ .search{grid-template-columns:1fr 1fr}
+}
+
+@media(max-width:550px){
+ .container{width:94%}
+ .nav{min-height:auto}
+ .logo-icon{width:39px;height:39px;border-radius:11px}
+ .logo-icon svg{width:32px}
+ .logo-name{font-size:20px}
+ .logo-sub{font-size:8px}
+ .nav-actions{gap:5px;margin-right:auto}
+ .nav-actions .btn{padding:8px 10px;font-size:11px}
+ .nav-actions .account{display:none}
+ .links{display:flex!important;order:3;width:100%;justify-content:space-between;gap:3px;padding:10px 0 3px}
+ .links a{font-size:11px;white-space:nowrap}
+ .cars{grid-template-columns:1fr}
+ .categories{grid-template-columns:repeat(2,1fr)}
+ .search{grid-template-columns:1fr}
+ .hero{padding:45px 0}
+ .hero h1{font-size:38px}
+ .cta{align-items:flex-start;flex-direction:column}
+ .stats{gap:20px}
+}
 </style>
 </head>
+
 <body>
 
 <header>
 <div class="container nav">
+
 <a class="logo" href="#">
 <div class="logo-icon">
 <svg viewBox="0 0 100 100" fill="none">
@@ -94,39 +130,65 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 <circle cx="73" cy="70" r="9" fill="#17130c" stroke="#e4bd70" stroke-width="4"/>
 </svg>
 </div>
-<div><div class="logo-name">عربيتي</div><div class="logo-sub">ARABYTI MARKETPLACE</div></div>
+<div>
+<div class="logo-name">عربيتي</div>
+<div class="logo-sub">ARABYTI MARKETPLACE</div>
+</div>
 </a>
+
 <nav class="links">
-<a href="#">الرئيسية</a><a href="#cars">السيارات</a><a href="#categories">الماركات</a><a href="#sell">أعلن عن سيارتك</a>
+<a href="#">الرئيسية</a>
+<a href="#cars">السيارات</a>
+<a href="#categories">الماركات</a>
+<a href="#sell">أعلن عن سيارتك</a>
 </nav>
+
 <div class="nav-actions">
 <span id="accountName" class="account"></span>
 <button class="btn darkbtn" id="loginBtn">دخول</button>
 <button class="btn gold" id="addBtn">+ أضف إعلانك</button>
 <button class="btn darkbtn" id="logoutBtn" style="display:none">خروج</button>
 </div>
+
 </div>
 </header>
 
 <main>
+
 <div class="hero">
 <div class="container">
 <div class="eyebrow">✦ عالم السيارات بين يديك</div>
 <h1>سيارتك القادمة<br><span>تبدأ من هنا.</span></h1>
 <p>اكتشف السيارات المعروضة للبيع في السودان ودول الخليج. ابحث وقارن وتواصل مع البائعين بسهولة.</p>
+
 <div class="search">
 <input class="field" id="search" placeholder="ابحث عن ماركة أو موديل...">
+
 <select class="field" id="country">
 <option value="">كل الدول</option>
-<option>السودان</option><option>السعودية</option><option>الإمارات</option>
-<option>قطر</option><option>الكويت</option><option>البحرين</option><option>عمان</option>
+<option>السودان</option>
+<option>السعودية</option>
+<option>الإمارات</option>
+<option>قطر</option>
+<option>الكويت</option>
+<option>البحرين</option>
+<option>عمان</option>
 </select>
+
 <select class="field" id="brand">
 <option value="">كل الماركات</option>
-<option>تويوتا</option><option>نيسان</option><option>مرسيدس</option><option>هيونداي</option><option>BMW</option><option>كيا</option><option>هوندا</option>
+<option>تويوتا</option>
+<option>نيسان</option>
+<option>مرسيدس</option>
+<option>هيونداي</option>
+<option>BMW</option>
+<option>كيا</option>
+<option>هوندا</option>
 </select>
+
 <button class="btn gold" id="searchBtn">ابحث الآن</button>
 </div>
+
 <div class="stats">
 <div><strong>7</strong><small>دول مستهدفة</small></div>
 <div><strong>24/7</strong><small>تصفح الإعلانات</small></div>
@@ -137,7 +199,12 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 
 <section id="cars">
 <div class="container">
-<div class="heading"><div><h2>السيارات المعروضة</h2><p>إعلانات السيارات من مستخدمي عربيتي</p></div></div>
+<div class="heading">
+<div>
+<h2>السيارات المعروضة</h2>
+<p>إعلانات السيارات من مستخدمي عربيتي</p>
+</div>
+</div>
 <div id="carList" class="cars"></div>
 <div id="empty" class="empty" style="display:none">لا توجد سيارات مطابقة حالياً. كن أول من يضيف إعلاناً!</div>
 </div>
@@ -145,7 +212,13 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 
 <section id="categories">
 <div class="container">
-<div class="heading"><div><h2>تصفح حسب الماركة</h2><p>اختر الماركة المفضلة لديك</p></div></div>
+<div class="heading">
+<div>
+<h2>تصفح حسب الماركة</h2>
+<p>اختر الماركة المفضلة لديك</p>
+</div>
+</div>
+
 <div class="categories">
 <div class="category">🚘<br>تويوتا</div>
 <div class="category">🚙<br>نيسان</div>
@@ -158,31 +231,40 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 <section id="sell">
 <div class="container">
 <div class="cta">
-<div><h2>عندك سيارة للبيع؟</h2><p>اعرض سيارتك وتواصل مع المشترين.</p></div>
+<div>
+<h2>عندك سيارة للبيع؟</h2>
+<p>اعرض سيارتك وتواصل مع المشترين.</p>
+</div>
 <button class="btn gold" id="sellBtn">أضف سيارتك الآن ←</button>
 </div>
 </div>
 </section>
+
 </main>
 
-<footer><div class="container footer-row"><div><b style="color:#e5bd70">عربيتي ARABYTI</b><br><small>سوقك الأول للسيارات</small></div><small>© 2026 عربيتي. جميع الحقوق محفوظة.</small></div></footer>
+<footer>
+<div class="container footer-row">
+<div>
+<b style="color:#e5bd70">عربيتي ARABYTI</b><br>
+<small>سوقك الأول للسيارات</small>
+</div>
+<small>© 2026 عربيتي. جميع الحقوق محفوظة.</small>
+</div>
+</footer>
 
-<!-- نافذة الحساب -->
+<!-- نافذة تسجيل الدخول بقوقل فقط -->
 <div class="modal" id="authModal">
 <div class="modal-box">
-<div class="modal-head"><h2 id="authTitle">تسجيل الدخول</h2><button class="close" data-close="authModal">✕</button></div>
+<div class="modal-head">
+<h2>تسجيل الدخول</h2>
+<button class="close" data-close="authModal">✕</button>
+</div>
+
 <div id="authNotice" class="notice"></div>
-<form id="authForm" class="form">
-<div id="nameWrap" style="display:none"><label>الاسم الكامل<input class="field" id="fullName" placeholder="اكتب اسمك"></label></div>
-<label>البريد الإلكتروني<input class="field" id="email" type="email" required placeholder="example@email.com"></label>
-<label id="passwordWrap">كلمة المرور<input class="field" id="password" type="password" minlength="6" placeholder="6 أحرف على الأقل"></label>
-<button class="btn gold" id="authSubmit">دخول</button>
-</form>
-<div class="form" style="margin-top:12px">
+
+<div class="form">
+<p class="form-note">سجّل الدخول باستخدام حساب Google للمتابعة واستخدام جميع خدمات عربيتي.</p>
 <button class="btn google" id="googleBtn" type="button">G　المتابعة باستخدام Google</button>
-<button class="btn darkbtn" id="resendBtn" type="button">إعادة إرسال رسالة التحقق</button>
-<p class="form-note" id="authSwitch">ليس لديك حساب؟ <button id="registerSwitch" type="button">إنشاء حساب</button></p>
-<p class="form-note"><button id="forgotBtn" type="button">نسيت كلمة المرور؟ أرسل رابط الاستعادة</button></p>
 </div>
 </div>
 </div>
@@ -190,44 +272,88 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 <!-- نافذة إضافة سيارة -->
 <div class="modal" id="carModal">
 <div class="modal-box">
-<div class="modal-head"><h2>إضافة إعلان سيارة</h2><button class="close" data-close="carModal">✕</button></div>
+<div class="modal-head">
+<h2>إضافة إعلان سيارة</h2>
+<button class="close" data-close="carModal">✕</button>
+</div>
+
 <div id="carNotice" class="notice"></div>
+
 <form id="carForm" class="form">
-<label>ماركة السيارة<input class="field" id="carBrand" required placeholder="مثلاً: تويوتا"></label>
-<label>الموديل<input class="field" id="carModel" required placeholder="مثلاً: كامري"></label>
-<label>سنة الصنع<input class="field" id="carYear" type="number" min="1950" max="2035" required></label>
-<label>المسافة المقطوعة (كم)<input class="field" id="carKm" type="number" min="0" required></label>
-<label>الدولة<select class="field" id="carCountry" required>
+
+<label>ماركة السيارة
+<input class="field" id="carBrand" required placeholder="مثلاً: تويوتا">
+</label>
+
+<label>الموديل
+<input class="field" id="carModel" required placeholder="مثلاً: كامري">
+</label>
+
+<label>سنة الصنع
+<input class="field" id="carYear" type="number" min="1950" max="2035" required>
+</label>
+
+<label>المسافة المقطوعة (كم)
+<input class="field" id="carKm" type="number" min="0" required>
+</label>
+
+<label>الدولة
+<select class="field" id="carCountry" required>
 <option value="">اختر الدولة</option>
-<option>السودان</option><option>السعودية</option><option>الإمارات</option><option>قطر</option><option>الكويت</option><option>البحرين</option><option>عمان</option>
-</select></label>
-<label>المدينة<input class="field" id="carCity" required placeholder="مثلاً: جدة أو الخرطوم"></label>
-<label>السعر<input class="field" id="carPrice" type="number" min="1" required></label>
-<label>العملة<select class="field" id="carCurrency" required>
+<option>السودان</option>
+<option>السعودية</option>
+<option>الإمارات</option>
+<option>قطر</option>
+<option>الكويت</option>
+<option>البحرين</option>
+<option>عمان</option>
+</select>
+</label>
+
+<label>المدينة
+<input class="field" id="carCity" required placeholder="مثلاً: جدة أو الخرطوم">
+</label>
+
+<label>السعر
+<input class="field" id="carPrice" type="number" min="1" required>
+</label>
+
+<label>العملة
+<select class="field" id="carCurrency" required>
 <option value="">اختر العملة</option>
-<option value="ج.س">جنيه سوداني</option><option value="ر.س">ريال سعودي</option><option value="د.إ">درهم إماراتي</option><option value="ر.ق">ريال قطري</option><option value="د.ك">دينار كويتي</option><option value="د.ب">دينار بحريني</option><option value="ر.ع">ريال عماني</option>
-</select></label>
-<label>رقم التواصل<input class="field" id="carPhone" type="tel" required placeholder="رقم الهاتف أو واتساب"></label>
-<label>وصف السيارة<textarea class="field" id="carDescription" rows="3" placeholder="اكتب تفاصيل إضافية"></textarea></label>
+<option value="ج.س">جنيه سوداني</option>
+<option value="ر.س">ريال سعودي</option>
+<option value="د.إ">درهم إماراتي</option>
+<option value="ر.ق">ريال قطري</option>
+<option value="د.ك">دينار كويتي</option>
+<option value="د.ب">دينار بحريني</option>
+<option value="ر.ع">ريال عماني</option>
+</select>
+</label>
+
+<label>رقم التواصل
+<input class="field" id="carPhone" type="tel" required placeholder="رقم الهاتف أو واتساب">
+</label>
+
+<label>وصف السيارة
+<textarea class="field" id="carDescription" rows="3" placeholder="اكتب تفاصيل إضافية"></textarea>
+</label>
+
 <button class="btn gold" id="publishBtn">نشر الإعلان</button>
 <p class="form-note">لن يتم رفع صور في هذه المرحلة. الإعلان سيُحفظ في قاعدة بيانات عربيتي.</p>
+
 </form>
 </div>
 </div>
 
 <script type="module">
+
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
  getAuth,
- createUserWithEmailAndPassword,
- signInWithEmailAndPassword,
  GoogleAuthProvider,
  signInWithPopup,
- sendPasswordResetEmail,
- sendEmailVerification,
- updateProfile,
- reload,
  onAuthStateChanged,
  signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -255,222 +381,113 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+ prompt: "select_account"
+});
 
 const $ = id => document.getElementById(id);
+
 let currentUser = null;
 let allCars = [];
-let authMode = "login";
-let authFlowBusy = false;
 
 function notice(id,message){
  const el=$(id);
  el.textContent=message;
  el.classList.add("show");
 }
+
 function clearNotice(id){
  $(id).textContent="";
  $(id).classList.remove("show");
 }
-function openModal(id){$(id).classList.add("show")}
-function closeModal(id){$(id).classList.remove("show")}
 
-document.querySelectorAll("[data-close]").forEach(button=>{
- button.addEventListener("click",()=>closeModal(button.dataset.close));
-});
-
-function setAuthMode(mode){
- authMode=mode;
- clearNotice("authNotice");
- $("authTitle").textContent=mode==="login"?"تسجيل الدخول":"إنشاء حساب جديد";
- $("authSubmit").textContent=mode==="login"?"دخول":"إنشاء الحساب";
- $("nameWrap").style.display=mode==="register"?"block":"none";
- $("passwordWrap").style.display="block";
- $("resendBtn").style.display=mode==="login"?"block":"none";
- $("authSwitch").innerHTML=mode==="login"
- ? 'ليس لديك حساب؟ <button id="registerSwitch" type="button">إنشاء حساب</button>'
- : 'لديك حساب بالفعل؟ <button id="registerSwitch" type="button">تسجيل الدخول</button>';
- $("registerSwitch").onclick=()=>setAuthMode(mode==="login"?"register":"login");
+function openModal(id){
+ $(id).classList.add("show");
 }
 
-$("loginBtn").onclick=()=>{
- setAuthMode("login");
- openModal("authModal");
-};
+function closeModal(id){
+ $(id).classList.remove("show");
+}
 
-$("authForm").addEventListener("submit",async e=>{
- e.preventDefault();
- clearNotice("authNotice");
-
- const email=$("email").value.trim();
- const password=$("password").value;
- const submit=$("authSubmit");
- submit.disabled=true;
- authFlowBusy=true;
-
- try{
-  if(authMode==="register"){
-   const name=$("fullName").value.trim();
-   if(!name)throw new Error("اكتب اسمك الكامل.");
-
-   const result=await createUserWithEmailAndPassword(auth,email,password);
-   await updateProfile(result.user,{displayName:name});
-
-   await sendEmailVerification(result.user,{
-    url:"https://blaktywlb2-source.github.io/Arabyti/"
-   });
-
-   await signOut(auth);
-
-   setAuthMode("login");
-   $("email").value=email;
-   notice("authNotice","تم إنشاء الحساب مبدئياً. أرسلنا رسالة تحقق إلى بريدك الإلكتروني. افتح الرسالة واضغط رابط التحقق، ثم ارجع وسجّل الدخول. افحص مجلد الرسائل غير المرغوب فيها إذا لم تجد الرسالة.");
-  }else{
-   const result=await signInWithEmailAndPassword(auth,email,password);
-   await reload(result.user);
-
-   if(!result.user.emailVerified){
-    await sendEmailVerification(result.user,{
-     url:"https://blaktywlb2-source.github.io/Arabyti/"
-    });
-    await signOut(auth);
-    notice("authNotice","هذا البريد لم يتم التحقق منه بعد. أرسلنا إليك رسالة تحقق جديدة. افتح بريدك واضغط رابط التحقق، ثم حاول تسجيل الدخول.");
-   }else{
-    closeModal("authModal");
-   }
-  }
- }catch(error){
-  notice("authNotice",friendlyError(error));
- }finally{
-  authFlowBusy=false;
-  submit.disabled=false;
- }
+document.querySelectorAll("[data-close]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  closeModal(button.dataset.close);
+ });
 });
 
-$("resendBtn").onclick=async()=>{
+$("loginBtn").onclick=()=>{
  clearNotice("authNotice");
- const email=$("email").value.trim();
- const password=$("password").value;
-
- if(!email||!password){
-  notice("authNotice","اكتب بريدك الإلكتروني وكلمة المرور أولاً لإعادة إرسال رسالة التحقق.");
-  return;
- }
-
- const button=$("resendBtn");
- button.disabled=true;
- authFlowBusy=true;
-
- try{
-  const result=await signInWithEmailAndPassword(auth,email,password);
-  await reload(result.user);
-
-  if(result.user.emailVerified){
-   await signOut(auth);
-   notice("authNotice","بريدك الإلكتروني موثق بالفعل. يمكنك تسجيل الدخول الآن.");
-  }else{
-   await sendEmailVerification(result.user,{
-    url:"https://blaktywlb2-source.github.io/Arabyti/"
-   });
-   await signOut(auth);
-   notice("authNotice","تم إرسال رسالة تحقق جديدة. افتح بريدك واضغط على رابط التحقق.");
-  }
- }catch(error){
-  notice("authNotice",friendlyError(error));
- }finally{
-  authFlowBusy=false;
-  button.disabled=false;
- }
-};
-
-$("googleBtn").onclick=async()=>{
- clearNotice("authNotice");
- const button=$("googleBtn");
- button.disabled=true;
- authFlowBusy=true;
-
- try{
-  const result=await signInWithPopup(auth,googleProvider);
-  await reload(result.user);
-
-  if(!result.user.emailVerified){
-   await signOut(auth);
-   throw new Error("تعذر التحقق من بريد حساب Google. جرّب حساباً آخر.");
-  }
-
-  closeModal("authModal");
- }catch(error){
-  notice("authNotice",friendlyError(error));
- }finally{
-  authFlowBusy=false;
-  button.disabled=false;
- }
-};
-
-$("forgotBtn").onclick=async()=>{
- const email=$("email").value.trim();
- if(!email){
-  notice("authNotice","اكتب بريدك الإلكتروني أولاً.");
-  return;
- }
-
- try{
-  await sendPasswordResetEmail(auth,email);
-  notice("authNotice","إذا كان البريد مسجلاً، فستصلك رسالة لاستعادة كلمة المرور.");
- }catch(error){
-  notice("authNotice",friendlyError(error));
- }
+ openModal("authModal");
 };
 
 function friendlyError(error){
  const code=error.code||"";
+
  const errors={
-  "auth/email-already-in-use":"هذا البريد مسجل من قبل.",
-  "auth/invalid-email":"البريد الإلكتروني غير صحيح.",
-  "auth/weak-password":"كلمة المرور ضعيفة. استخدم 6 أحرف على الأقل.",
-  "auth/invalid-credential":"البريد أو كلمة المرور غير صحيحة.",
   "auth/popup-closed-by-user":"تم إغلاق نافذة Google قبل إكمال الدخول.",
   "auth/unauthorized-domain":"عنوان الموقع غير مضاف إلى النطاقات المسموح بها في Firebase.",
-  "auth/too-many-requests":"محاولات كثيرة. انتظر قليلاً ثم حاول مرة أخرى.",
+  "auth/popup-blocked":"المتصفح منع نافذة تسجيل الدخول. اسمح بالنوافذ المنبثقة وحاول مرة أخرى.",
+  "auth/cancelled-popup-request":"تم إلغاء طلب تسجيل الدخول السابق.",
+  "auth/account-exists-with-different-credential":"هذا الحساب مرتبط بطريقة دخول أخرى.",
   "permission-denied":"ليس لديك صلاحية لتنفيذ العملية. راجع قواعد Firestore."
  };
+
  return errors[code]||error.message||"حدث خطأ. حاول مرة أخرى.";
 }
 
+$("googleBtn").onclick=async()=>{
+ clearNotice("authNotice");
+
+ const button=$("googleBtn");
+ button.disabled=true;
+ button.textContent="جارٍ تسجيل الدخول...";
+
+ try{
+  const result=await signInWithPopup(auth,googleProvider);
+
+  if(!result.user.emailVerified){
+   await signOut(auth);
+   throw new Error("تعذر التحقق من حساب Google. جرّب حساباً آخر.");
+  }
+
+  currentUser=result.user;
+  closeModal("authModal");
+
+ }catch(error){
+  notice("authNotice",friendlyError(error));
+ }finally{
+  button.disabled=false;
+  button.textContent="G　المتابعة باستخدام Google";
+ }
+};
+
 onAuthStateChanged(auth,async user=>{
- if(authFlowBusy)return;
 
  if(user){
-  try{
-   await reload(user);
+  const isGoogleAccount=user.providerData.some(
+   provider=>provider.providerId==="google.com"
+  );
 
-   const isPasswordAccount=user.providerData.some(
-    provider=>provider.providerId==="password"
-   );
-
-   if(isPasswordAccount&&!user.emailVerified){
-    currentUser=null;
-    await signOut(auth);
-    $("loginBtn").style.display="inline-block";
-    $("logoutBtn").style.display="none";
-    $("accountName").textContent="";
-    setAuthMode("login");
-    openModal("authModal");
-    notice("authNotice","يجب التحقق من بريدك الإلكتروني قبل استخدام حسابك. سجّل الدخول لإرسال رسالة تحقق جديدة.");
-    return;
-   }
-
-   currentUser=user;
-  }catch(error){
-   console.error(error);
+  if(!isGoogleAccount||!user.emailVerified){
    currentUser=null;
+   await signOut(auth);
+   $("loginBtn").style.display="inline-block";
+   $("logoutBtn").style.display="none";
+   $("accountName").textContent="";
+   return;
   }
+
+  currentUser=user;
+
  }else{
   currentUser=null;
  }
 
  $("loginBtn").style.display=currentUser?"none":"inline-block";
  $("logoutBtn").style.display=currentUser?"inline-block":"none";
+
  $("accountName").textContent=currentUser
   ?(currentUser.displayName||currentUser.email||"")
   :"";
@@ -479,14 +496,18 @@ onAuthStateChanged(auth,async user=>{
 $("logoutBtn").onclick=async()=>{
  try{
   await signOut(auth);
- }catch(e){
-  alert(friendlyError(e));
+ }catch(error){
+  alert(friendlyError(error));
  }
 };
 
 function escapeHTML(value){
  return String(value??"").replace(/[&<>"']/g,char=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  }[char]));
 }
 
@@ -501,21 +522,41 @@ function carDrawing(){
 }
 
 function renderCars(items){
+
  $("carList").innerHTML=items.map(car=>`
  <article class="car">
-  <div class="car-art"><span class="tag">إعلان</span>${carDrawing()}</div>
+  <div class="car-art">
+   <span class="tag">إعلان</span>
+   ${carDrawing()}
+  </div>
+
   <div class="car-info">
    <h3>${escapeHTML(car.brand)} ${escapeHTML(car.model)}</h3>
+
    <div class="details">
     <span>${escapeHTML(car.year)}</span>
     <span>${Number(car.km).toLocaleString("en-US")} كم</span>
     <span>${escapeHTML(car.country)} - ${escapeHTML(car.city)}</span>
    </div>
-   <div class="price">${Number(car.price).toLocaleString("en-US")} ${escapeHTML(car.currency)}</div>
-   <div class="details">${escapeHTML(car.description||"لا يوجد وصف إضافي")}</div>
+
+   <div class="price">
+    ${Number(car.price).toLocaleString("en-US")} ${escapeHTML(car.currency)}
+   </div>
+
+   <div class="details">
+    ${escapeHTML(car.description||"لا يوجد وصف إضافي")}
+   </div>
+
    <div class="car-bottom" style="margin-top:13px">
     <small>البائع: ${escapeHTML(car.sellerName||"مستخدم عربيتي")}</small>
-    <a class="btn gold" style="font-size:11px;padding:8px 11px" href="https://wa.me/${String(car.phone||"").replace(/[^0-9]/g,"")}" target="_blank" rel="noopener">واتساب</a>
+
+    <a class="btn gold"
+       style="font-size:11px;padding:8px 11px"
+       href="https://wa.me/${String(car.phone||"").replace(/[^0-9]/g,"")}"
+       target="_blank"
+       rel="noopener">
+       واتساب
+    </a>
    </div>
   </div>
  </article>
@@ -525,6 +566,7 @@ function renderCars(items){
 }
 
 function applyFilters(){
+
  const search=$("search").value.trim().toLowerCase();
  const country=$("country").value;
  const brand=$("brand").value;
@@ -539,17 +581,26 @@ function applyFilters(){
 }
 
 $("searchBtn").onclick=applyFilters;
+
 $("search").addEventListener("keydown",e=>{
  if(e.key==="Enter")applyFilters();
 });
+
 $("country").onchange=applyFilters;
 $("brand").onchange=applyFilters;
 
-const carsQuery=query(collection(db,"cars"),orderBy("createdAt","desc"));
+const carsQuery=query(
+ collection(db,"cars"),
+ orderBy("createdAt","desc")
+);
 
 onSnapshot(carsQuery,snapshot=>{
- allCars=snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
+ allCars=snapshot.docs.map(doc=>({
+  id:doc.id,
+  ...doc.data()
+ }));
  applyFilters();
+
 },error=>{
  console.error("Firestore read error:",error);
  $("carList").innerHTML="";
@@ -558,8 +609,13 @@ onSnapshot(carsQuery,snapshot=>{
 
 function currencyFor(country){
  return {
-  "السودان":"ج.س","السعودية":"ر.س","الإمارات":"د.إ",
-  "قطر":"ر.ق","الكويت":"د.ك","البحرين":"د.ب","عمان":"ر.ع"
+  "السودان":"ج.س",
+  "السعودية":"ر.س",
+  "الإمارات":"د.إ",
+  "قطر":"ر.ق",
+  "الكويت":"د.ك",
+  "البحرين":"د.ب",
+  "عمان":"ر.ع"
  }[country]||"";
 }
 
@@ -568,17 +624,21 @@ $("carCountry").onchange=()=>{
 };
 
 function openAddCar(){
+
  if(!currentUser){
-  setAuthMode("login");
+  clearNotice("authNotice");
   openModal("authModal");
-  notice("authNotice","سجّل الدخول أولاً حتى تتمكن من إضافة إعلان.");
+  notice("authNotice","سجّل الدخول بحساب Google أولاً حتى تتمكن من إضافة إعلان.");
   return;
  }
 
- if(!currentUser.emailVerified){
-  setAuthMode("login");
+ const isGoogleAccount=currentUser.providerData.some(
+  provider=>provider.providerId==="google.com"
+ );
+
+ if(!isGoogleAccount){
   openModal("authModal");
-  notice("authNotice","تحقق من بريدك الإلكتروني أولاً قبل إضافة إعلان.");
+  notice("authNotice","يجب تسجيل الدخول باستخدام حساب Google.");
   return;
  }
 
@@ -590,48 +650,67 @@ $("addBtn").onclick=openAddCar;
 $("sellBtn").onclick=openAddCar;
 
 $("carForm").addEventListener("submit",async e=>{
+
  e.preventDefault();
 
- if(!currentUser||!currentUser.emailVerified){
-  notice("carNotice","يجب تسجيل الدخول ببريد موثق أو بحساب Google.");
+ const isGoogleAccount=currentUser?.providerData?.some(
+  provider=>provider.providerId==="google.com"
+ );
+
+ if(!currentUser||!isGoogleAccount||!currentUser.emailVerified){
+  notice("carNotice","يجب تسجيل الدخول بحساب Google أولاً.");
   return;
  }
 
  clearNotice("carNotice");
+
  const button=$("publishBtn");
  button.disabled=true;
 
  try{
+
   const country=$("carCountry").value;
   const phone=$("carPhone").value.trim();
 
   await addDoc(collection(db,"cars"),{
+
    brand:$("carBrand").value.trim(),
    model:$("carModel").value.trim(),
    year:Number($("carYear").value),
    km:Number($("carKm").value),
+
    country,
    city:$("carCity").value.trim(),
+
    price:Number($("carPrice").value),
    currency:$("carCurrency").value||currencyFor(country),
+
    phone,
    description:$("carDescription").value.trim(),
+
    sellerId:currentUser.uid,
    sellerName:currentUser.displayName||currentUser.email,
+
    createdAt:serverTimestamp(),
    status:"active"
+
   });
 
   $("carForm").reset();
   closeModal("carModal");
+
   alert("تم نشر إعلان سيارتك بنجاح!");
 
  }catch(error){
+
   notice("carNotice",friendlyError(error));
+
  }finally{
   button.disabled=false;
  }
+
 });
+
 </script>
 </body>
 </html>
