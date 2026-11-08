@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101010">
+<title>عربيتي | سوق السيارات الأول</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --gold:#d8ad58;
+  --gold2:#f2d28b;
+  --black:#101010;
+  --panel:#191919;
+  --muted:#999;
+  --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Cairo',sans-serif;
+  background:var(--black);
+  color:var(--white);
+}
+a{text-decoration:none;color:inherit}
+button,input,select{font:inherit}
+.container{width:min(1180px,92%);margin:auto}
+header{
+  border-bottom:1px solid #292929;
+  background:#111;
+  position:sticky;top:0;z-index:10;
+}
+.nav{
+  display:flex;align-items:center;justify-content:space-between;
+  min-height:78px;gap:20px;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:48px;height:48px;border-radius:15px;
+  background:linear-gradient(145deg,#f4d58f,#b98730);
+  display:grid;place-items:center;
+}
+.logo-icon svg{width:37px;height:37px}
+.logo-name{font-size:25px;font-weight:900;color:var(--gold2)}
+.logo-sub{font-size:10px;color:#aaa;letter-spacing:2px}
+.links{display:flex;gap:24px;color:#ccc;font-size:14px}
+.links a:hover{color:var(--gold)}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.btn{
+  border:0;border-radius:10px;padding:11px 18px;
+  cursor:pointer;font-weight:700;
+}
+.btn-gold{background:linear-gradient(135deg,#f0d28d,#c28d37);color:#17120a}
+.btn-dark{background:#252525;color:white;border:1px solid #444}
+.hero{
+  padding:75px 0 55px;
+  background:
+  radial-gradient(ellipse at 75% 30%,#49371944,transparent 50%),
+  linear-gradient(120deg,#151515,#101010);
+}
+.hero-content{max-width:760px}
+.eyebrow{color:var(--gold);font-size:13px;font-weight:700}
+.hero h1{font-size:clamp(35px,6vw,64px);line-height:1.4;margin:15px 0}
+.hero h1 span{color:var(--gold)}
+.hero p{color:#aaa;line-height:2;max-width:600px}
+.search-box{
+  margin-top:30px;background:#202020;padding:12px;
+  border:1px solid #383838;border-radius:15px;
+  display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;
+}
+.search-box input,.search-box select{
+  min-width:0;background:#141414;color:white;
+  border:1px solid #333;border-radius:9px;padding:13px;
+  outline:none;
+}
+.stats{display:flex;gap:35px;margin-top:35px;flex-wrap:wrap}
+.stat strong{display:block;color:var(--gold2);font-size:24px}
+.stat small{color:#999}
+section{padding:55px 0}
+.section-head{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;margin-bottom:25px;
+}
+.section-head h2{font-size:25px}
+.section-head p{color:#999;font-size:13px}
+.section-head a{color:var(--gold);font-size:13px}
+.cars{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+}
+.car{
+  background:var(--panel);border:1px solid #303030;
+  border-radius:16px;overflow:hidden;transition:.25s;
+}
+.car:hover{transform:translateY(-5px);border-color:#a98443}
+.car-art{
+  height:190px;background:linear-gradient(145deg,#30291e,#171717);
+  display:grid;place-items:center;position:relative;
+}
+.car-art svg{width:80%;max-width:280px}
+.tag{
+  position:absolute;top:13px;right:13px;
+  background:#d8ad58;color:#17120a;padding:5px 10px;
+  border-radius:6px;font-size:11px;font-weight:800;
+}
+.car-info{padding:17px}
+.car-info h3{font-size:18px;margin-bottom:8px}
+.details{display:flex;gap:13px;color:#999;font-size:12px;flex-wrap:wrap}
+.price{color:var(--gold2);font-weight:900;font-size:21px;margin:15px 0}
+.car-bottom{display:flex;justify-content:space-between;align-items:center}
+.car-bottom small{color:#888}
+.favorite{background:#292929;border:0;color:#e7bd65;padding:9px 12px;border-radius:8px;cursor:pointer}
+.empty{
+  text-align:center;background:#191919;border:1px dashed #444;
+  border-radius:15px;padding:35px;color:#aaa
+}
+.categories{display:grid;grid-template-columns:repeat(4,1fr);gap:15px}
+.category{
+  background:#1a1a1a;border:1px solid #333;
+  padding:23px;border-radius:13px;text-align:center;
+}
+.category b{display:block;color:var(--gold2);margin-top:9px}
+.cta{
+  background:linear-gradient(120deg,#332716,#191919);
+  border:1px solid #72572d;border-radius:20px;
+  padding:35px;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;
+}
+.cta h2{font-size:25px;margin-bottom:8px}
+.cta p{color:#bbb;font-size:13px}
+footer{border-top:1px solid #292929;padding:30px 0;color:#888}
+.footer-row{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
+@media(max-width:850px){
+ .links{display:none}
+ .cars{grid-template-columns:repeat(2,1fr)}
+ .search-box{grid-template-columns:1fr 1fr}
+ .categories{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+ .nav{min-height:68px}
+ .logo-name{font-size:21px}
+ .nav-actions .btn-dark{display:none}
+ .hero{padding:48px 0}
+ .search-box{grid-template-columns:1fr}
+ .cars{grid-template-columns:1fr}
+ .cta{flex-direction:column;align-items:flex-start}
+ .stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="container nav">
+  <a class="logo" href="#">
+   <div class="logo-icon">
+    <svg viewBox="0 0 100 100" fill="none">
+     <path d="M12 58L22 42Q25 36 34 36H66Q76 36 82 47L90 59V72H10V60Z" fill="#17130c"/>
+     <path d="M31 41H65Q72 41 77 51H25Z" fill="#e4bd70"/>
+     <circle cx="28" cy="70" r="9" fill="#17130c" stroke="#e4bd70" stroke-width="4"/>
+     <circle cx="73" cy="70" r="9" fill="#17130c" stroke="#e4bd70" stroke-width="4"/>
+    </svg>
+   </div>
+   <div>
+    <div class="logo-name">عربيتي</div>
+    <div class="logo-sub">ARABYTI MARKETPLACE</div>
+   </div>
+  </a>
+  <nav class="links">
+   <a href="#">الرئيسية</a>
+   <a href="#cars">السيارات</a>
+   <a href="#categories">التصنيفات</a>
+   <a href="#sell">أعلن عن سيارتك</a>
+  </nav>
+  <div class="nav-actions">
+   <button class="btn btn-dark" onclick="alert('سيتم تفعيل تسجيل الدخول قريباً')">دخول</button>
+   <button class="btn btn-gold" onclick="alert('سيتم تفعيل إضافة الإعلانات قريباً')">+ أضف إعلانك</button>
+  </div>
+ </div>
+</header>
+
+<main>
+ <div class="hero">
+  <div class="container">
+   <div class="hero-content">
+    <div class="eyebrow">✦ عالم السيارات بين يديك</div>
+    <h1>سيارتك القادمة<br><span>تبدأ من هنا.</span></h1>
+    <p>اكتشف آلاف الخيارات، قارن الأسعار، وتواصل مباشرة مع البائعين في السودان ودول الخليج عبر تجربة شراء وبيع أكثر سهولة.</p>
+    <div class="search-box">
+     <input id="search" placeholder="ابحث عن سيارة...">
+     <select id="country">
+      <option value="">كل الدول</option>
+      <option>السودان</option>
+      <option>السعودية</option>
+      <option>الإمارات</option>
+      <option>قطر</option>
+      <option>الكويت</option>
+      <option>عمان</option>
+      <option>البحرين</option>
+     </select>
+     <select id="type">
+      <option value="">كل الأنواع</option>
+      <option>تويوتا</option>
+      <option>هيونداي</option>
+      <option>مرسيدس</option>
+      <option>نيسان</option>
+      <option>BMW</option>
+     </select>
+     <button class="btn btn-gold" onclick="filterCars()">ابحث الآن</button>
+    </div>
+    <div class="stats">
+     <div class="stat"><strong>7</strong><small>دول مستهدفة</small></div>
+     <div class="stat"><strong>24/7</strong><small>تصفح الإعلانات</small></div>
+     <div class="stat"><strong>∞</strong><small>فرص للعثور على سيارتك</small></div>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <section id="cars">
+  <div class="container">
+   <div class="section-head">
+    <div><h2>سيارات مختارة</h2><p>اكتشف أحدث السيارات المعروضة</p></div>
+    <a href="#cars">استكشف السيارات ←</a>
+   </div>
+   <div class="cars" id="carList"></div>
+   <div id="noResults" class="empty" style="display:none">لم نجد سيارات مطابقة لبحثك.</div>
+  </div>
+ </section>
+
+ <section id="categories">
+  <div class="container">
+   <div class="section-head">
+    <div><h2>تصفح حسب الماركة</h2><p>اختر الماركة المفضلة لديك</p></div>
+   </div>
+   <div class="categories">
+    <div class="category">🚘<b>تويوتا</b></div>
+    <div class="category">🚙<b>نيسان</b></div>
+    <div class="category">🏎️<b>مرسيدس</b></div>
+    <div class="category">🚗<b>هيونداي</b></div>
+   </div>
+  </div>
+ </section>
+
+ <section id="sell">
+  <div class="container">
+   <div class="cta">
+    <div>
+     <h2>عندك سيارة للبيع؟</h2>
+     <p>اعرض سيارتك على عربيتي وخلّي المشترين يصلوا ليك.</p>
+    </div>
+    <button class="btn btn-gold" onclick="alert('إضافة الإعلانات ستكون متاحة بعد ربط الحسابات')">أضف سيارتك الآن ←</button>
+   </div>
+  </div>
+ </section>
+</main>
+
+<footer>
+ <div class="container footer-row">
+  <div><b style="color:#e5bd70">عربيتي ARABYTI</b><br><small>سوقك الأول للسيارات</small></div>
+  <small>© 2026 عربيتي. جميع الحقوق محفوظة.</small>
+ </div>
+</footer>
+
+<script>
+const cars = [
+ {name:"تويوتا كامري 2022",brand:"تويوتا",year:2022,km:"35,000 كم",country:"السعودية",price:"92,000",currency:"ر.س",label:"مميز",color:"#d6d6d6"},
+ {name:"مرسيدس C200 2021",brand:"مرسيدس",year:2021,km:"48,000 كم",country:"الإمارات",price:"125,000",currency:"د.إ",label:"فرصة",color:"#b6b6b6"},
+ {name:"هيونداي إلنترا 2023",brand:"هيونداي",year:2023,km:"22,000 كم",country:"السودان",price:"18,000,000",currency:"ج.س",label:"حديثة",color:"#b3c5d4"}
+];
+
+function carDrawing(color){
+ return `<svg viewBox="0 0 320 150" aria-label="رسم سيارة">
+ <ellipse cx="160" cy="127" rx="130" ry="9" fill="#000" opacity=".35"/>
+ <path d="M35 100L53 76Q62 68 91 64L120 35Q130 26 151 26H211Q228 26 240 47L269 76L290 89L294 112H25L27 102Z" fill="${color}"/>
+ <path d="M127 40H207Q219 40 229 65H104Z" fill="#27313a"/>
+ <path d="M99 70H263" stroke="#777" stroke-width="3"/>
+ <circle cx="86" cy="111" r="20" fill="#151515" stroke="#777" stroke-width="6"/>
+ <circle cx="242" cy="111" r="20" fill="#151515" stroke="#777" stroke-width="6"/>
+ <path d="M32 94H49M278 91H291" stroke="#f3d28c" stroke-width="5" stroke-linecap="round"/>
+ </svg>`;
+}
+
+function renderCars(items){
+ const list=document.getElementById("carList");
+ list.innerHTML=items.map((c,i)=>`
+ <article class="car">
+  <div class="car-art">
+   <span class="tag">${c.label}</span>
+   ${carDrawing(c.color)}
+  </div>
+  <div class="car-info">
+   <h3>${c.name}</h3>
+   <div class="details"><span>${c.year}</span><span>${c.km}</span><span>${c.country}</span></div>
+   <div class="price">${c.price} ${c.currency}</div>
+   <div class="car-bottom">
+    <small>بيانات تجريبية للعرض</small>
+    <button class="favorite" onclick="this.textContent=this.textContent==='♡'?'♥':'♡'">♡</button>
+   </div>
+  </div>
+ </article>`).join("");
+ document.getElementById("noResults").style.display=items.length?"none":"block";
+}
+function filterCars(){
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ const country=document.getElementById("country").value;
+ const brand=document.getElementById("type").value;
+ const result=cars.filter(c=>
+  (!q||c.name.toLowerCase().includes(q))&&
+  (!country||c.country===country)&&
+  (!brand||c.brand===brand)
+ );
+ renderCars(result);
+}
+renderCars(cars);
+</script>
+</body>
+</html>
