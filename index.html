@@ -7,7 +7,6 @@
 <title>عربيتي | سوق السيارات</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-
 :root{--gold:#d8ad58;--light:#f2d28b;--bg:#101010;--panel:#1b1b1b;--muted:#999;--white:#fff}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Cairo,sans-serif;background:var(--bg);color:var(--white)}
@@ -55,7 +54,6 @@ section{padding:48px 0}
 .price{color:var(--light);font-size:20px;font-weight:900;margin:13px 0}
 .car-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .car-bottom small{color:#999;font-size:10px}
-.favorite{background:#292929;color:#e7bd65;border:0;border-radius:8px;padding:8px 12px}
 .empty{text-align:center;padding:30px;background:#1b1b1b;border:1px dashed #444;border-radius:12px;color:#aaa}
 .categories{display:grid;grid-template-columns:repeat(4,1fr);gap:13px}
 .category{background:#1b1b1b;border:1px solid #333;border-radius:13px;padding:22px;text-align:center;color:var(--light);font-weight:800}
@@ -181,7 +179,8 @@ footer{border-top:1px solid #292929;padding:27px 0;color:#888}
 <button class="btn gold" id="authSubmit">دخول</button>
 </form>
 <div class="form" style="margin-top:12px">
-<button class="btn google" id="googleBtn">G　المتابعة باستخدام Google</button>
+<button class="btn google" id="googleBtn" type="button">G　المتابعة باستخدام Google</button>
+<button class="btn darkbtn" id="resendBtn" type="button">إعادة إرسال رسالة التحقق</button>
 <p class="form-note" id="authSwitch">ليس لديك حساب؟ <button id="registerSwitch" type="button">إنشاء حساب</button></p>
 <p class="form-note"><button id="forgotBtn" type="button">نسيت كلمة المرور؟ أرسل رابط الاستعادة</button></p>
 </div>
@@ -226,7 +225,9 @@ import {
  GoogleAuthProvider,
  signInWithPopup,
  sendPasswordResetEmail,
+ sendEmailVerification,
  updateProfile,
+ reload,
  onAuthStateChanged,
  signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
@@ -241,7 +242,6 @@ import {
  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-// بيانات Firebase الخاصة بمشروع عربيتي
 const firebaseConfig = {
  apiKey: "AIzaSyAB1WrCFjRCDzkdnpHZJWgMVZq_R-vuMDg",
  authDomain: "arabyti-sd.firebaseapp.com",
@@ -261,6 +261,7 @@ const $ = id => document.getElementById(id);
 let currentUser = null;
 let allCars = [];
 let authMode = "login";
+let authFlowBusy = false;
 
 function notice(id,message){
  const el=$(id);
@@ -285,53 +286,140 @@ function setAuthMode(mode){
  $("authSubmit").textContent=mode==="login"?"دخول":"إنشاء الحساب";
  $("nameWrap").style.display=mode==="register"?"block":"none";
  $("passwordWrap").style.display="block";
+ $("resendBtn").style.display=mode==="login"?"block":"none";
  $("authSwitch").innerHTML=mode==="login"
  ? 'ليس لديك حساب؟ <button id="registerSwitch" type="button">إنشاء حساب</button>'
  : 'لديك حساب بالفعل؟ <button id="registerSwitch" type="button">تسجيل الدخول</button>';
  $("registerSwitch").onclick=()=>setAuthMode(mode==="login"?"register":"login");
 }
-$("loginBtn").onclick=()=>{setAuthMode("login");openModal("authModal")};
+
+$("loginBtn").onclick=()=>{
+ setAuthMode("login");
+ openModal("authModal");
+};
 
 $("authForm").addEventListener("submit",async e=>{
  e.preventDefault();
  clearNotice("authNotice");
+
  const email=$("email").value.trim();
  const password=$("password").value;
  const submit=$("authSubmit");
  submit.disabled=true;
+ authFlowBusy=true;
+
  try{
   if(authMode==="register"){
    const name=$("fullName").value.trim();
    if(!name)throw new Error("اكتب اسمك الكامل.");
+
    const result=await createUserWithEmailAndPassword(auth,email,password);
    await updateProfile(result.user,{displayName:name});
-   notice("authNotice","تم إنشاء حسابك بنجاح.");
+
+   await sendEmailVerification(result.user,{
+    url:"https://blaktywlb2-source.github.io/Arabyti/"
+   });
+
+   await signOut(auth);
+
+   setAuthMode("login");
+   $("email").value=email;
+   notice("authNotice","تم إنشاء الحساب مبدئياً. أرسلنا رسالة تحقق إلى بريدك الإلكتروني. افتح الرسالة واضغط رابط التحقق، ثم ارجع وسجّل الدخول. افحص مجلد الرسائل غير المرغوب فيها إذا لم تجد الرسالة.");
   }else{
-   await signInWithEmailAndPassword(auth,email,password);
-   closeModal("authModal");
+   const result=await signInWithEmailAndPassword(auth,email,password);
+   await reload(result.user);
+
+   if(!result.user.emailVerified){
+    await sendEmailVerification(result.user,{
+     url:"https://blaktywlb2-source.github.io/Arabyti/"
+    });
+    await signOut(auth);
+    notice("authNotice","هذا البريد لم يتم التحقق منه بعد. أرسلنا إليك رسالة تحقق جديدة. افتح بريدك واضغط رابط التحقق، ثم حاول تسجيل الدخول.");
+   }else{
+    closeModal("authModal");
+   }
   }
  }catch(error){
   notice("authNotice",friendlyError(error));
  }finally{
+  authFlowBusy=false;
   submit.disabled=false;
  }
 });
 
+$("resendBtn").onclick=async()=>{
+ clearNotice("authNotice");
+ const email=$("email").value.trim();
+ const password=$("password").value;
+
+ if(!email||!password){
+  notice("authNotice","اكتب بريدك الإلكتروني وكلمة المرور أولاً لإعادة إرسال رسالة التحقق.");
+  return;
+ }
+
+ const button=$("resendBtn");
+ button.disabled=true;
+ authFlowBusy=true;
+
+ try{
+  const result=await signInWithEmailAndPassword(auth,email,password);
+  await reload(result.user);
+
+  if(result.user.emailVerified){
+   await signOut(auth);
+   notice("authNotice","بريدك الإلكتروني موثق بالفعل. يمكنك تسجيل الدخول الآن.");
+  }else{
+   await sendEmailVerification(result.user,{
+    url:"https://blaktywlb2-source.github.io/Arabyti/"
+   });
+   await signOut(auth);
+   notice("authNotice","تم إرسال رسالة تحقق جديدة. افتح بريدك واضغط على رابط التحقق.");
+  }
+ }catch(error){
+  notice("authNotice",friendlyError(error));
+ }finally{
+  authFlowBusy=false;
+  button.disabled=false;
+ }
+};
+
 $("googleBtn").onclick=async()=>{
  clearNotice("authNotice");
+ const button=$("googleBtn");
+ button.disabled=true;
+ authFlowBusy=true;
+
  try{
-  await signInWithPopup(auth,googleProvider);
+  const result=await signInWithPopup(auth,googleProvider);
+  await reload(result.user);
+
+  if(!result.user.emailVerified){
+   await signOut(auth);
+   throw new Error("تعذر التحقق من بريد حساب Google. جرّب حساباً آخر.");
+  }
+
   closeModal("authModal");
- }catch(error){notice("authNotice",friendlyError(error))}
+ }catch(error){
+  notice("authNotice",friendlyError(error));
+ }finally{
+  authFlowBusy=false;
+  button.disabled=false;
+ }
 };
 
 $("forgotBtn").onclick=async()=>{
  const email=$("email").value.trim();
- if(!email){notice("authNotice","اكتب بريدك الإلكتروني أولاً.");return}
+ if(!email){
+  notice("authNotice","اكتب بريدك الإلكتروني أولاً.");
+  return;
+ }
+
  try{
   await sendPasswordResetEmail(auth,email);
-  notice("authNotice","إذا كان البريد مسجلاً، فسيصلك رابط استعادة كلمة المرور.");
- }catch(error){notice("authNotice",friendlyError(error))}
+  notice("authNotice","إذا كان البريد مسجلاً، فستصلك رسالة لاستعادة كلمة المرور.");
+ }catch(error){
+  notice("authNotice",friendlyError(error));
+ }
 };
 
 function friendlyError(error){
@@ -343,20 +431,57 @@ function friendlyError(error){
   "auth/invalid-credential":"البريد أو كلمة المرور غير صحيحة.",
   "auth/popup-closed-by-user":"تم إغلاق نافذة Google قبل إكمال الدخول.",
   "auth/unauthorized-domain":"عنوان الموقع غير مضاف إلى النطاقات المسموح بها في Firebase.",
+  "auth/too-many-requests":"محاولات كثيرة. انتظر قليلاً ثم حاول مرة أخرى.",
   "permission-denied":"ليس لديك صلاحية لتنفيذ العملية. راجع قواعد Firestore."
  };
- return errors[code]||"حدث خطأ: "+(error.message||"حاول مرة أخرى.");
+ return errors[code]||error.message||"حدث خطأ. حاول مرة أخرى.";
 }
 
-onAuthStateChanged(auth,user=>{
- currentUser=user;
- $("loginBtn").style.display=user?"none":"inline-block";
- $("logoutBtn").style.display=user?"inline-block":"none";
- $("accountName").textContent=user?(user.displayName||user.email):"";
+onAuthStateChanged(auth,async user=>{
+ if(authFlowBusy)return;
+
+ if(user){
+  try{
+   await reload(user);
+
+   const isPasswordAccount=user.providerData.some(
+    provider=>provider.providerId==="password"
+   );
+
+   if(isPasswordAccount&&!user.emailVerified){
+    currentUser=null;
+    await signOut(auth);
+    $("loginBtn").style.display="inline-block";
+    $("logoutBtn").style.display="none";
+    $("accountName").textContent="";
+    setAuthMode("login");
+    openModal("authModal");
+    notice("authNotice","يجب التحقق من بريدك الإلكتروني قبل استخدام حسابك. سجّل الدخول لإرسال رسالة تحقق جديدة.");
+    return;
+   }
+
+   currentUser=user;
+  }catch(error){
+   console.error(error);
+   currentUser=null;
+  }
+ }else{
+  currentUser=null;
+ }
+
+ $("loginBtn").style.display=currentUser?"none":"inline-block";
+ $("logoutBtn").style.display=currentUser?"inline-block":"none";
+ $("accountName").textContent=currentUser
+  ?(currentUser.displayName||currentUser.email||"")
+  :"";
 });
 
 $("logoutBtn").onclick=async()=>{
- try{await signOut(auth)}catch(e){alert(friendlyError(e))}
+ try{
+  await signOut(auth);
+ }catch(e){
+  alert(friendlyError(e));
+ }
 };
 
 function escapeHTML(value){
@@ -395,6 +520,7 @@ function renderCars(items){
   </div>
  </article>
  `).join("");
+
  $("empty").style.display=items.length?"none":"block";
 }
 
@@ -402,19 +528,25 @@ function applyFilters(){
  const search=$("search").value.trim().toLowerCase();
  const country=$("country").value;
  const brand=$("brand").value;
+
  const result=allCars.filter(car=>
   (!search||(car.brand+" "+car.model).toLowerCase().includes(search))&&
   (!country||car.country===country)&&
   (!brand||car.brand===brand)
  );
+
  renderCars(result);
 }
+
 $("searchBtn").onclick=applyFilters;
-$("search").addEventListener("keydown",e=>{if(e.key==="Enter")applyFilters()});
+$("search").addEventListener("keydown",e=>{
+ if(e.key==="Enter")applyFilters();
+});
 $("country").onchange=applyFilters;
 $("brand").onchange=applyFilters;
 
 const carsQuery=query(collection(db,"cars"),orderBy("createdAt","desc"));
+
 onSnapshot(carsQuery,snapshot=>{
  allCars=snapshot.docs.map(doc=>({id:doc.id,...doc.data()}));
  applyFilters();
@@ -430,6 +562,7 @@ function currencyFor(country){
   "قطر":"ر.ق","الكويت":"د.ك","البحرين":"د.ب","عمان":"ر.ع"
  }[country]||"";
 }
+
 $("carCountry").onchange=()=>{
  $("carCurrency").value=currencyFor($("carCountry").value);
 };
@@ -441,21 +574,37 @@ function openAddCar(){
   notice("authNotice","سجّل الدخول أولاً حتى تتمكن من إضافة إعلان.");
   return;
  }
+
+ if(!currentUser.emailVerified){
+  setAuthMode("login");
+  openModal("authModal");
+  notice("authNotice","تحقق من بريدك الإلكتروني أولاً قبل إضافة إعلان.");
+  return;
+ }
+
  clearNotice("carNotice");
  openModal("carModal");
 }
+
 $("addBtn").onclick=openAddCar;
 $("sellBtn").onclick=openAddCar;
 
 $("carForm").addEventListener("submit",async e=>{
  e.preventDefault();
- if(!currentUser){notice("carNotice","سجّل الدخول أولاً.");return}
+
+ if(!currentUser||!currentUser.emailVerified){
+  notice("carNotice","يجب تسجيل الدخول ببريد موثق أو بحساب Google.");
+  return;
+ }
+
  clearNotice("carNotice");
  const button=$("publishBtn");
  button.disabled=true;
+
  try{
   const country=$("carCountry").value;
   const phone=$("carPhone").value.trim();
+
   await addDoc(collection(db,"cars"),{
    brand:$("carBrand").value.trim(),
    model:$("carModel").value.trim(),
@@ -472,9 +621,11 @@ $("carForm").addEventListener("submit",async e=>{
    createdAt:serverTimestamp(),
    status:"active"
   });
+
   $("carForm").reset();
   closeModal("carModal");
   alert("تم نشر إعلان سيارتك بنجاح!");
+
  }catch(error){
   notice("carNotice",friendlyError(error));
  }finally{
